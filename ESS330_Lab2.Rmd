@@ -1,0 +1,84 @@
+# Question 1: Read in the Minnesota tree growth dataset. Use glimpse to understand the structure and names of the dataset. Describe the structure and what you see in the dataset.
+```{r Q1}
+library(dplyr)
+library(tidyverse)
+tree_data <- read.csv("data/tree_dat.csv")
+glimpse(tree_data)
+```
+
+# Question 2: How many records have been made in stand 1?
+```{r Q2}
+stand1_records <- tree_data %>%
+  filter(standID == 1)
+n_stand1 <- nrow(stand1_records)
+print(n_stand1)
+```
+  
+# Question 3: How many records of the Abies balsamea and Pinus strobus species have been made?
+```{r Q3}
+
+```
+  
+# Question 4: How many trees are older then 200 years old in the last year of the dataset?
+```{r}
+
+```
+  
+# Question 5: What is the oldest tree in the dataset found using slice_max?
+  treeID - 24, standID - 2, stand - A2, year - 2007, species – Pire, age - 269 
+  
+# Question 6: Find the oldest 5 trees recorded in 2001. Use the help docs to understand optional parameters
+  TreeID: 24, 25, 1595, 1598, & 1712
+  
+# Question 7: Using slice_sample, how many trees are in a 30% sample of those recorded in 2002?
+  687
+  
+# Question 8: Filter all trees in stand 5 in 2007. Sort this subset by descending radius at breast height (rad_ib) and use slice_head() to get the top three trees. Report the tree IDs
+  128, 157, 135
+  
+# Question 9: Reduce your full data.frame to [treeID, stand, year, and radius at breast height]. Filter to only those in stand 3 with records from 2007, and use slice_min to pull the smallest three trees meaured that year.
+  treeID: 50,56,36 & rad_ib: 47.4, 48.4, 54.9
+  
+# Question 10: Use select to remove the stand column. Use glimspe to show the dataset.
+  tree_data <- tree_dat %>%
+  + select(-standID)
+  glimpse(tree_data)
+  
+# Question 11: Look at the help document for dplyr::select and examine the “Overview of selection features”. Identify an option (there are multiple) that would help select all columns with the string “ID” in the name. Using glimpse to view the remaining dataset
+  id_columns <- tree_dat %>%
+  + select(contains(“ID”))
+  glimpse(id_columns)
+  
+# Question 12: Find a selection pattern that captures all columns with either ‘ID’ or ‘stand’ in the name. Use glimpse to verify the selection.
+  id_stand_columns <- tree_dat %>%
+  + select(matches(“ID|stand”))
+  glimpse(id_stand_columns)
+
+# Question 13: Looking back at the data dictionary, rename rad_inc and inc to include _[unit] in the name. Unlike earlier options, be sure that this renaming is permanent, and stays with your data.frame (e.g. <-). Use glimpse to view your new data.frame.
+  tree_data <- tree_dat %>%
+  + rename(rad_inc_cm = rad_inc, inc_cm = inc)
+  glimpse(tree_data)
+
+# Question 14: A key measurement in forestry in “basal area column”. The metric is computed with the formula:
+  BA(m2) = 0.00007854⋅DBH^2
+Where DBH is the diameter at breast height (cm). Use mutate to compute DBH in centimeters, and BA in m2 (HINT: Make sure rad_ib is in cm prior to computing the diameter!). What is the mean BA_m2 of the the species POTR in 2007?
+  3.70cm
+
+# Question 15: Lets say for the sake of our study, trees are not established until they are 5 years of age. Use if_else to add a boolean column to our dataset called established that is TRUE if the age is greater then 5 and FALSE if less then or equal to five. Once added, use count (see ?count) to determine how many records are from estabilshed trees?
+  False - 8883, True - 122503
+
+# Question 16: Use mutate and case_when to add a new column to you data.frame that classifies each tree into the proper DBH_class. Once done, limit your dataset to the year 2007 and report the number of each class with count.
+  large - 2291
+
+# Question 17: Compute the mean DBH (in cm) and standard deviation of DBH (in cm) for all trees in 2007. Explain the values you found and their statistical meaning.
+  mean_DBH - 161cm, sd_DBH - 61.4cm. the mean is the average of the DBH and the standard deviation is how much the data varies from the mean. 
+
+# Question 18: Compute the per species mean tree age using only those ages recorded in 2003. Identify the three species with the oldest mean age.
+  THOC, FRNI, and PIST
+
+# Question 19: In a single summarize call, find the number of unique years with records in the data set along with the first and last year recorded?
+  int - 111, dbl - 1897, dbl - 2007
+  
+# Question 20: Determine the stands with the largest number of unique years recorded. Report all stands with largest (or tied with the largest) temporal record.
+A1 - 111, D1 - 111, D2 - 111, D3 - 111, F1 - 111.
+
